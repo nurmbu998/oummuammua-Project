@@ -1,4 +1,4 @@
-# OumuamuaObservation
+# OumuamuaObservation: Full-Stack Records Management System
 
 A Spring Boot application for managing Oumuamua observation records.
 
