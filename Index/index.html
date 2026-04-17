@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover the Mysteries of Oumuamua</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $http) {
+            // Fetch welcome message
+            $http.get("http://127.0.0.1:5500/welcome")
+            .then(function(response) {
+                $scope.welcomeMessage = response.data;
+            }, function(error) {
+                console.error("Error: ", error);
+            });
+
+            // Initialize observations array
+            $scope.observations = [];
+
+            // Fetch existing observations
+            $http.get("/api/observations")
+            .then(function(response) {
+                $scope.observations = response.data;
+            });
+
+            // Add new observation
+            $scope.addObservation = function() {
+                if ($scope.newObservation && $scope.newObservation.date && $scope.newObservation.details) {
+                    $http.post("/api/observations", $scope.newObservation)
+                    .then(function(response) {
+                        $scope.observations.push(response.data);
+                        $scope.newObservation = {}; // Clear the form
+                    }, function(error) {
+                        console.error("Error adding observation:", error);
+                    });
+                } else {
+                    alert("Please fill in both date and details.");
+                }
+            };
+        });
+    </script>
+</head>
+<body ng-controller="myCtrl">
+    <header>
+        <h1>Discover the Mysteries of Oumuamua</h1>
+        <p>Unveiling the Secrets of the First Interstellar Visitor</p>
+    </header>
+    <main>
+        <section>
+            <img src="https://planetplanet.net/wp-content/uploads/2018/01/oumuamua-001.jpg" alt="Oumuamua Image 1">
+            <p>Journey Through Space with Oumuamua</p>
+        </section>
+        <section>
+            <img src="https://www.eso.org/public/archives/images/screen/eso1737a.jpg" alt="Oumuamua Image 2">
+            <p>Explore the Unknown: Oumuamua's Mysterious Origins</p>
+        </section>
+        <div>
+            <h1>{{ welcomeMessage.message }}</h1>
+            <ul>
+                <li ng-repeat="observation in observations">
+                    {{ observation.date }}: {{ observation.details }}
+                </li>
+            </ul>
+            <form ng-submit="addObservation()">
+                <input type="text" ng-model="newObservation.date" placeholder="Date" required>
+                <input type="text" ng-model="newObservation.details" placeholder="Details" required>
+                <button type="submit">Add Observation</button>
+            </form>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

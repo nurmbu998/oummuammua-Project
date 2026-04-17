@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oumuamua Observation Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body ng-controller="myCtrl">
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-copy">
+                <span class="eyebrow">Interstellar Observation</span>
+                <h1>Track Oumuamua's legacy with modern science.</h1>
+                <p>Capture, review and enrich the first interstellar visitor’s observation record in a secure, responsive portal.</p>
+                <a class="hero-cta" href="#observations">View observations</a>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <span>Current status</span>
+                    <strong>{{ welcomeMessage.message }}</strong>
+                    <p>Records are pulled live from the observation database.</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="info-grid">
+                <article class="info-card">
+                    <h2>Mission</h2>
+                    <p>Store and share discoveries about Oumuamua’s trajectory, composition, and observational context.</p>
+                </article>
+                <article class="info-card">
+                    <h2>Precision</h2>
+                    <p>Structured observation entries with date validation and clean data capture.</p>
+                </article>
+                <article class="info-card">
+                    <h2>Access</h2>
+                    <p>Browse the latest logs from the H2 database and inspect records through a modern frontend.</p>
+                </article>
+            </section>
+
+            <section id="observations" class="dashboard-grid">
+                <div class="panel panel-primary">
+                    <div class="panel-header">
+                        <h3>Observation feed</h3>
+                        <p>Latest entries from the Oumuamua observation repository.</p>
+                    </div>
+                    <div class="panel-body">
+                        <table class="observation-table" ng-if="observations.length">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="observation in observations">
+                                    <td>{{ observation.observationDate }}</td>
+                                    <td>{{ observation.details }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="empty-state" ng-if="!observations.length">
+                            <p>No observations yet. Add the first data point below.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="panel panel-secondary">
+                    <div class="panel-header">
+                        <h3>Add new observation</h3>
+                        <p>Enter the observation date and a short summary.</p>
+                    </div>
+                    <form class="observation-form" ng-submit="addObservation()">
+                        <label>
+                            Observation date
+                            <input type="date" ng-model="newObservation.observationDate" required>
+                        </label>
+                        <label>
+                            Observation details
+                            <textarea rows="4" ng-model="newObservation.details" placeholder="Enter observation notes" required></textarea>
+                        </label>
+                        <button type="submit" class="button-primary">Submit observation</button>
+                    </form>
+                </aside>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
