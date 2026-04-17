@@ -1,7 +1,6 @@
 # OumuamuaObservation: Full-Stack Records Management System
 
-A Spring Boot application for managing Oumuamua observation records.
-
+A robust RESTful API built with Spring Boot and C++ integration, designed for real-time observation data management. Featuring automated validation, in-memory H2 database persistence, and secure remote access via ngrok tunnels.
 ## Features
 
 - REST API for observations with CRUD operations
